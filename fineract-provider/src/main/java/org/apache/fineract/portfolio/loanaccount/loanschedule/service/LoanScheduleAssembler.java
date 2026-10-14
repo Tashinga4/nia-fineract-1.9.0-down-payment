@@ -274,11 +274,15 @@ public class LoanScheduleAssembler {
          * If user has not passed the first repayments date then then derive the same based on loan type.
          */
         if (calculatedRepaymentsStartingFromDate == null) {
+            // must match DefaultScheduledDateGenerator, otherwise the first repayment breaks the working-day rhythm
+            final WorkingDays workingDaysForRepaymentSteps = this.configurationDomainService.isRepaymentStepsInWorkingDaysEnabled()
+                    ? this.workingDaysRepository.findOne()
+                    : null;
             LocalDate tmpCalculatedRepaymentsStartingFromDate = deriveFirstRepaymentDate(loanType, repaymentEvery, expectedDisbursementDate,
-                    repaymentPeriodFrequencyType, 0, calendar, submittedOnDate, repaymentStartDateType);
+                    repaymentPeriodFrequencyType, 0, calendar, submittedOnDate, repaymentStartDateType, workingDaysForRepaymentSteps);
             calculatedRepaymentsStartingFromDate = deriveFirstRepaymentDate(loanType, repaymentEvery, expectedDisbursementDate,
                     repaymentPeriodFrequencyType, loanProduct.getMinimumDaysBetweenDisbursalAndFirstRepayment(), calendar, submittedOnDate,
-                    repaymentStartDateType);
+                    repaymentStartDateType, workingDaysForRepaymentSteps);
             // If calculated repayment start date does not match due to minimum days between disbursal and first
             // repayment rule, we set repaymentsStartingFromDate (which will be used as seed date later)
             if (!tmpCalculatedRepaymentsStartingFromDate.equals(calculatedRepaymentsStartingFromDate)) {
@@ -457,7 +461,8 @@ public class LoanScheduleAssembler {
         final List<Holiday> holidays = this.holidayRepository.findByOfficeIdAndGreaterThanDate(officeId, expectedDisbursementDate,
                 HolidayStatusType.ACTIVE.getValue());
         final WorkingDays workingDays = this.workingDaysRepository.findOne();
-        HolidayDetailDTO detailDTO = new HolidayDetailDTO(isHolidayEnabled, holidays, workingDays);
+        HolidayDetailDTO detailDTO = new HolidayDetailDTO(isHolidayEnabled, holidays, workingDays, false, false,
+                this.configurationDomainService.isRepaymentStepsInWorkingDaysEnabled());
         final boolean isInterestToBeRecoveredFirstWhenGreaterThanEMI = this.configurationDomainService
                 .isInterestToBeRecoveredFirstWhenGreaterThanEMI();
         final boolean isPrincipalCompoundingDisabledForOverdueLoans = this.configurationDomainService
@@ -1101,11 +1106,19 @@ public class LoanScheduleAssembler {
     private LocalDate deriveFirstRepaymentDate(final AccountType loanType, final Integer repaymentEvery,
             final LocalDate expectedDisbursementDate, final PeriodFrequencyType repaymentPeriodFrequencyType,
             final Integer minimumDaysBetweenDisbursalAndFirstRepayment, final Calendar calendar, final LocalDate submittedOnDate,
-            final RepaymentStartDateType repaymentStartDateType) {
+            final RepaymentStartDateType repaymentStartDateType, final WorkingDays workingDaysForRepaymentSteps) {
         LocalDate derivedFirstRepayment = null;
+        // daily repayments counted in working days ("repayment-steps-in-working-days")
+        final boolean stepInWorkingDays = workingDaysForRepaymentSteps != null && calendar == null
+                && repaymentPeriodFrequencyType.isDaily();
 
-        final LocalDate dateBasedOnMinimumDaysBetweenDisbursalAndFirstRepayment = expectedDisbursementDate
+        LocalDate dateBasedOnMinimumDaysBetweenDisbursalAndFirstRepayment = expectedDisbursementDate
                 .plusDays(minimumDaysBetweenDisbursalAndFirstRepayment);
+        if (stepInWorkingDays) {
+            // never let the minimum-days rule put the first repayment on a non-working day
+            dateBasedOnMinimumDaysBetweenDisbursalAndFirstRepayment = WorkingDaysUtil
+                    .nextWorkingDayOnOrAfter(dateBasedOnMinimumDaysBetweenDisbursalAndFirstRepayment, workingDaysForRepaymentSteps);
+        }
         final LocalDate seedDate = repaymentStartDateType.isDisbursementDate() ? expectedDisbursementDate : submittedOnDate;
         if (calendar != null) {
             derivedFirstRepayment = deriveFirstRepaymentDateForLoans(repaymentEvery, expectedDisbursementDate, seedDate,
@@ -1116,7 +1129,9 @@ public class LoanScheduleAssembler {
             // (disbursement date + plus frequency) or
             // (disbursement date + minimum between disbursal and first
             // repayment )
-            if (repaymentPeriodFrequencyType.isDaily()) {
+            if (stepInWorkingDays) {
+                dateBasedOnRepaymentFrequency = WorkingDaysUtil.plusWorkingDays(seedDate, repaymentEvery, workingDaysForRepaymentSteps);
+            } else if (repaymentPeriodFrequencyType.isDaily()) {
                 dateBasedOnRepaymentFrequency = seedDate.plusDays(repaymentEvery);
             } else if (repaymentPeriodFrequencyType.isWeekly()) {
                 dateBasedOnRepaymentFrequency = seedDate.plusWeeks(repaymentEvery);

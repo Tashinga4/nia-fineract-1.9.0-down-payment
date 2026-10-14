@@ -72,8 +72,13 @@ public class DefaultScheduledDateGenerator implements ScheduledDateGenerator {
             LocalDate seedDate = null;
             String reccuringString = null;
             Calendar currentCalendar = loanApplicationTerms.getLoanCalendar();
-            dueRepaymentPeriodDate = getRepaymentPeriodDate(loanApplicationTerms.getRepaymentPeriodFrequencyType(),
-                    loanApplicationTerms.getRepaymentEvery(), lastRepaymentDate);
+            if (isRepaymentStepInWorkingDays(loanApplicationTerms)) {
+                dueRepaymentPeriodDate = WorkingDaysUtil.plusWorkingDays(lastRepaymentDate, loanApplicationTerms.getRepaymentEvery(),
+                        loanApplicationTerms.getHolidayDetailDTO().getWorkingDays());
+            } else {
+                dueRepaymentPeriodDate = getRepaymentPeriodDate(loanApplicationTerms.getRepaymentPeriodFrequencyType(),
+                        loanApplicationTerms.getRepaymentEvery(), lastRepaymentDate);
+            }
             dueRepaymentPeriodDate = (LocalDate) CalendarUtils.adjustDate(dueRepaymentPeriodDate, loanApplicationTerms.getSeedDate(),
                     loanApplicationTerms.getRepaymentPeriodFrequencyType());
             if (currentCalendar != null) {
@@ -105,6 +110,21 @@ public class DefaultScheduledDateGenerator implements ScheduledDateGenerator {
         }
 
         return dueRepaymentPeriodDate;
+    }
+
+    /**
+     * True when a loan repaying every N days should count those N days in working days: the
+     * "repayment-steps-in-working-days" configuration is enabled, the repayment frequency is days and the loan has no
+     * meeting calendar. With Monday to Saturday as working days, every 3 days gives fixed pairs: Mon/Thu, Tue/Fri,
+     * Wed/Sat.
+     */
+    public static boolean isRepaymentStepInWorkingDays(final LoanApplicationTerms loanApplicationTerms) {
+        if (loanApplicationTerms == null || loanApplicationTerms.getLoanCalendar() != null
+                || !PeriodFrequencyType.DAYS.equals(loanApplicationTerms.getRepaymentPeriodFrequencyType())) {
+            return false;
+        }
+        final HolidayDetailDTO holidayDetailDTO = loanApplicationTerms.getHolidayDetailDTO();
+        return holidayDetailDTO != null && holidayDetailDTO.isRepaymentStepsInWorkingDays() && holidayDetailDTO.getWorkingDays() != null;
     }
 
     @Override
@@ -297,7 +317,12 @@ public class DefaultScheduledDateGenerator implements ScheduledDateGenerator {
 
         switch (repaymentPeriodFrequencyType) {
             case DAYS:
-                idealDisbursementDate = firstRepaymentDate.minusDays(repaidEvery);
+                if (isRepaymentStepInWorkingDays(loanApplicationTerms)) {
+                    idealDisbursementDate = WorkingDaysUtil.minusWorkingDays(firstRepaymentDate, repaidEvery,
+                            loanApplicationTerms.getHolidayDetailDTO().getWorkingDays());
+                } else {
+                    idealDisbursementDate = firstRepaymentDate.minusDays(repaidEvery);
+                }
             break;
             case WEEKS:
                 idealDisbursementDate = firstRepaymentDate.minusWeeks(repaidEvery);

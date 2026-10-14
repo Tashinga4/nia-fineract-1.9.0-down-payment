@@ -179,8 +179,10 @@ public class LoanUtilService {
         final boolean allowTransactionsOnHoliday = this.configurationDomainService.allowTransactionsOnHolidayEnabled();
         final boolean allowTransactionsOnNonWorkingDay = this.configurationDomainService.allowTransactionsOnNonWorkingDayEnabled();
 
+        final boolean repaymentStepsInWorkingDays = this.configurationDomainService.isRepaymentStepsInWorkingDaysEnabled();
+
         HolidayDetailDTO holidayDetailDTO = new HolidayDetailDTO(isHolidayEnabled, holidays, workingDays, allowTransactionsOnHoliday,
-                allowTransactionsOnNonWorkingDay);
+                allowTransactionsOnNonWorkingDay, repaymentStepsInWorkingDays);
         return holidayDetailDTO;
     }
 

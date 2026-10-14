@@ -74,4 +74,43 @@ public final class WorkingDaysUtil {
     public static RepaymentRescheduleType getRepaymentRescheduleType(final WorkingDays workingDays) {
         return RepaymentRescheduleType.fromInt(workingDays.getRepaymentReschedulingType());
     }
+
+    /**
+     * Moves the date forward by the given number of working days; non-working days are skipped and not counted.
+     */
+    public static LocalDate plusWorkingDays(final LocalDate date, final int numberOfWorkingDays, final WorkingDays workingDays) {
+        return moveByWorkingDays(date, numberOfWorkingDays, 1, workingDays);
+    }
+
+    /**
+     * Moves the date backward by the given number of working days; non-working days are skipped and not counted.
+     */
+    public static LocalDate minusWorkingDays(final LocalDate date, final int numberOfWorkingDays, final WorkingDays workingDays) {
+        return moveByWorkingDays(date, numberOfWorkingDays, -1, workingDays);
+    }
+
+    /**
+     * Returns the date itself if it is a working day, otherwise the first working day after it.
+     */
+    public static LocalDate nextWorkingDayOnOrAfter(final LocalDate date, final WorkingDays workingDays) {
+        return isWorkingDay(workingDays, date) ? date : plusWorkingDays(date, 1, workingDays);
+    }
+
+    private static LocalDate moveByWorkingDays(final LocalDate date, final int numberOfWorkingDays, final int direction,
+            final WorkingDays workingDays) {
+        LocalDate movedDate = date;
+        int remaining = numberOfWorkingDays;
+        // a week without any working day would loop forever
+        int nonWorkingDaysInARow = 0;
+        while (remaining > 0) {
+            movedDate = movedDate.plusDays(direction);
+            if (isWorkingDay(workingDays, movedDate)) {
+                remaining--;
+                nonWorkingDaysInARow = 0;
+            } else if (++nonWorkingDaysInARow >= 7) {
+                throw new IllegalStateException("Working days configuration has no working day: " + workingDays.getRecurrence());
+            }
+        }
+        return movedDate;
+    }
 }

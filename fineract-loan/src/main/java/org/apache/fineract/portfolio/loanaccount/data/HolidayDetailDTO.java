@@ -29,22 +29,26 @@ public class HolidayDetailDTO {
     final WorkingDays workingDays;
     final boolean allowTransactionsOnHoliday;
     final boolean allowTransactionsOnNonWorkingDay;
+    final boolean repaymentStepsInWorkingDays;
 
     public HolidayDetailDTO(final boolean isHolidayEnabled, final List<Holiday> holidays, final WorkingDays workingDays) {
-        this.isHolidayEnabled = isHolidayEnabled;
-        this.holidays = holidays;
-        this.workingDays = workingDays;
-        this.allowTransactionsOnHoliday = false;
-        this.allowTransactionsOnNonWorkingDay = false;
+        this(isHolidayEnabled, holidays, workingDays, false, false, false);
     }
 
     public HolidayDetailDTO(final boolean isHolidayEnabled, final List<Holiday> holidays, final WorkingDays workingDays,
             final boolean allowTransactionsOnHoliday, final boolean allowTransactionsOnNonWorkingDay) {
+        this(isHolidayEnabled, holidays, workingDays, allowTransactionsOnHoliday, allowTransactionsOnNonWorkingDay, false);
+    }
+
+    public HolidayDetailDTO(final boolean isHolidayEnabled, final List<Holiday> holidays, final WorkingDays workingDays,
+            final boolean allowTransactionsOnHoliday, final boolean allowTransactionsOnNonWorkingDay,
+            final boolean repaymentStepsInWorkingDays) {
         this.isHolidayEnabled = isHolidayEnabled;
         this.holidays = holidays;
         this.workingDays = workingDays;
         this.allowTransactionsOnHoliday = allowTransactionsOnHoliday;
         this.allowTransactionsOnNonWorkingDay = allowTransactionsOnNonWorkingDay;
+        this.repaymentStepsInWorkingDays = repaymentStepsInWorkingDays;
     }
 
     public boolean isHolidayEnabled() {
@@ -65,5 +69,13 @@ public class HolidayDetailDTO {
 
     public boolean isAllowTransactionsOnNonWorkingDay() {
         return this.allowTransactionsOnNonWorkingDay;
+    }
+
+    /**
+     * True when the "repayment-steps-in-working-days" configuration is enabled: products repaying every N days count
+     * those N days in working days only.
+     */
+    public boolean isRepaymentStepsInWorkingDays() {
+        return this.repaymentStepsInWorkingDays;
     }
 }

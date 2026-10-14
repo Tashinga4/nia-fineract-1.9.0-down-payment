@@ -99,6 +99,13 @@ public class ConfigurationDomainServiceJpa implements ConfigurationDomainService
     }
 
     @Override
+    public boolean isRepaymentStepsInWorkingDaysEnabled() {
+        final String workingDayStepsConfigurationProperty = "repayment-steps-in-working-days";
+        final GlobalConfigurationPropertyData property = getGlobalConfigurationPropertyData(workingDayStepsConfigurationProperty);
+        return property.isEnabled();
+    }
+
+    @Override
     public boolean allowTransactionsOnHolidayEnabled() {
         final String allowTransactionsOnHolidayProperty = "allow-transactions-on-holiday";
         final GlobalConfigurationPropertyData property = getGlobalConfigurationPropertyData(allowTransactionsOnHolidayProperty);
