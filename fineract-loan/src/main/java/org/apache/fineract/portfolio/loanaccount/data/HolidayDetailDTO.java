@@ -30,6 +30,7 @@ public class HolidayDetailDTO {
     final boolean allowTransactionsOnHoliday;
     final boolean allowTransactionsOnNonWorkingDay;
     final boolean repaymentStepsInWorkingDays;
+    final boolean downPaymentSpreadRemainingPrincipal;
 
     public HolidayDetailDTO(final boolean isHolidayEnabled, final List<Holiday> holidays, final WorkingDays workingDays) {
         this(isHolidayEnabled, holidays, workingDays, false, false, false);
@@ -43,12 +44,20 @@ public class HolidayDetailDTO {
     public HolidayDetailDTO(final boolean isHolidayEnabled, final List<Holiday> holidays, final WorkingDays workingDays,
             final boolean allowTransactionsOnHoliday, final boolean allowTransactionsOnNonWorkingDay,
             final boolean repaymentStepsInWorkingDays) {
+        this(isHolidayEnabled, holidays, workingDays, allowTransactionsOnHoliday, allowTransactionsOnNonWorkingDay,
+                repaymentStepsInWorkingDays, false);
+    }
+
+    public HolidayDetailDTO(final boolean isHolidayEnabled, final List<Holiday> holidays, final WorkingDays workingDays,
+            final boolean allowTransactionsOnHoliday, final boolean allowTransactionsOnNonWorkingDay,
+            final boolean repaymentStepsInWorkingDays, final boolean downPaymentSpreadRemainingPrincipal) {
         this.isHolidayEnabled = isHolidayEnabled;
         this.holidays = holidays;
         this.workingDays = workingDays;
         this.allowTransactionsOnHoliday = allowTransactionsOnHoliday;
         this.allowTransactionsOnNonWorkingDay = allowTransactionsOnNonWorkingDay;
         this.repaymentStepsInWorkingDays = repaymentStepsInWorkingDays;
+        this.downPaymentSpreadRemainingPrincipal = downPaymentSpreadRemainingPrincipal;
     }
 
     public boolean isHolidayEnabled() {
@@ -77,5 +86,13 @@ public class HolidayDetailDTO {
      */
     public boolean isRepaymentStepsInWorkingDays() {
         return this.repaymentStepsInWorkingDays;
+    }
+
+    /**
+     * True when the "down-payment-spread-remaining-principal" configuration is enabled: on loans with a down payment,
+     * the principal left after the down payment is spread over all the configured repayments.
+     */
+    public boolean isDownPaymentSpreadRemainingPrincipal() {
+        return this.downPaymentSpreadRemainingPrincipal;
     }
 }

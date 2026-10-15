@@ -106,6 +106,13 @@ public class ConfigurationDomainServiceJpa implements ConfigurationDomainService
     }
 
     @Override
+    public boolean isDownPaymentSpreadRemainingPrincipalEnabled() {
+        final String downPaymentSpreadConfigurationProperty = "down-payment-spread-remaining-principal";
+        final GlobalConfigurationPropertyData property = getGlobalConfigurationPropertyData(downPaymentSpreadConfigurationProperty);
+        return property.isEnabled();
+    }
+
+    @Override
     public boolean allowTransactionsOnHolidayEnabled() {
         final String allowTransactionsOnHolidayProperty = "allow-transactions-on-holiday";
         final GlobalConfigurationPropertyData property = getGlobalConfigurationPropertyData(allowTransactionsOnHolidayProperty);

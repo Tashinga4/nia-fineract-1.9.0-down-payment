@@ -21,6 +21,7 @@ package org.apache.fineract.portfolio.loanaccount.loanschedule.domain;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -862,13 +863,13 @@ public final class LoanApplicationTerms {
         final int totalRepaymentsWithCapitalPayment = calculateNumberOfRepaymentsWithPrincipalPayment();
         Money principalPerPeriod = null;
         if (getFixedEmiAmount() == null) {
+            final Money principalToSpread = principalToSpreadOverInstallments();
             if (this.fixedPrincipalPercentagePerInstallment != null) {
-                principalPerPeriod = this.principal.minus(totalPrincipalAccounted)
-                        .percentageOf(this.fixedPrincipalPercentagePerInstallment, mc.getRoundingMode())
+                principalPerPeriod = principalToSpread.percentageOf(this.fixedPrincipalPercentagePerInstallment, mc.getRoundingMode())
                         .plus(this.adjustPrincipalForFlatLoans);
             } else {
-                principalPerPeriod = this.principal.minus(totalPrincipalAccounted)
-                        .dividedBy(totalRepaymentsWithCapitalPayment, mc.getRoundingMode()).plus(this.adjustPrincipalForFlatLoans);
+                principalPerPeriod = principalToSpread.dividedBy(totalRepaymentsWithCapitalPayment, mc.getRoundingMode())
+                        .plus(this.adjustPrincipalForFlatLoans);
             }
             if (isPrincipalGraceApplicableForThisPeriod(periodNumber)) {
                 principalPerPeriod = principalPerPeriod.zero();
@@ -881,7 +882,11 @@ public final class LoanApplicationTerms {
 
             }
 
-            if (this.installmentAmountInMultiplesOf != null) {
+            if (this.installmentAmountInMultiplesOf != null && isDownPaymentSpreadOverRemainingInstallments()
+                    && interestForThisInstallment != null && principalPerPeriod.isGreaterThanZero()) {
+                principalPerPeriod = roundInstallmentKeepingRepaymentCount(principalPerPeriod, interestForThisInstallment,
+                        principalToSpread, totalRepaymentsWithCapitalPayment);
+            } else if (this.installmentAmountInMultiplesOf != null) {
                 Money roundedPrincipalPerPeriod = Money.roundToMultiplesOf(principalPerPeriod, this.installmentAmountInMultiplesOf);
                 if (interestForThisInstallment != null) {
                     Money roundedInterestForThisInstallment = Money.roundToMultiplesOf(interestForThisInstallment,
@@ -906,6 +911,44 @@ public final class LoanApplicationTerms {
         }
 
         return principalPerPeriod;
+    }
+
+    /**
+     * Principal still to be spread over the flat installments. Without the "down-payment-spread-remaining-principal"
+     * configuration this is the full loan principal, so on a loan with a down payment the installments are sized for
+     * the full amount and the schedule ends before the configured number of repayments. With it, the down payment is
+     * taken off first. Multi-disbursement loans already schedule the principal net of the down payment.
+     */
+    private Money principalToSpreadOverInstallments() {
+        Money principalToSpread = this.principal.minus(this.totalPrincipalAccounted);
+        if (isDownPaymentSpreadOverRemainingInstallments()) {
+            principalToSpread = principalToSpread.minus(this.downPaymentAmount);
+        }
+        return principalToSpread;
+    }
+
+    /**
+     * Rounds the whole installment (principal + interest) to the installment multiple, instead of rounding principal
+     * and interest separately: rounding both up makes every installment too big and the schedule ends early. If even
+     * the nearest multiple would pay off the principal before the last repayment, the installment is rounded down and
+     * the last repayment takes the remainder.
+     */
+    private Money roundInstallmentKeepingRepaymentCount(final Money principalPerPeriod, final Money interestForThisInstallment,
+            final Money principalToSpread, final int numberOfRepayments) {
+        final BigDecimal multiple = BigDecimal.valueOf(this.installmentAmountInMultiplesOf);
+        final BigDecimal exactInstallment = principalPerPeriod.plus(interestForThisInstallment).getAmount();
+        Money principal = Money.of(getCurrency(), exactInstallment.divide(multiple, 0, RoundingMode.HALF_UP).multiply(multiple))
+                .minus(interestForThisInstallment);
+        if (numberOfRepayments > 1 && principal.multipliedBy(numberOfRepayments - 1).isGreaterThanOrEqualTo(principalToSpread)) {
+            principal = Money.of(getCurrency(), exactInstallment.divide(multiple, 0, RoundingMode.FLOOR).multiply(multiple))
+                    .minus(interestForThisInstallment);
+        }
+        return principal;
+    }
+
+    public boolean isDownPaymentSpreadOverRemainingInstallments() {
+        return this.isDownPaymentEnabled && !this.multiDisburseLoan && this.holidayDetailDTO != null
+                && this.holidayDetailDTO.isDownPaymentSpreadRemainingPrincipal();
     }
 
     private PrincipalInterest calculateTotalFlatInterestForPeriod(final PaymentPeriodsInOneYearCalculator calculator,
