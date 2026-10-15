@@ -1,0 +1,77 @@
+       removed Test holiday Thu 22 Oct run 2
+[PASS] Setting 'down-payment-spread-remaining-principal' exists and is off after installation
+       If enabled: on loans with a down payment, the principal left after the down payment is spread over all the configured repayments, so the schedule has the full number of repayments
+       11 down-payment products: 15H8 15HW 2H4W 2H6W 2H8B 2H8W 2HB4 5H8B H6BW HBW4 HP4B
+[PASS] Setting OFF: stock schedules, down-payment products still short (the bug)
+       15H8 7/8, 2H6W 5/6, 2H8B 14/16, 2H8W 6/8, 2HB4 6/8, 5H8B 14/16, H6BW 10/12, HBW4 6/8, HP4B 7/8
+[PASS] 15H8 15% HP 8 Weeks (Weekly): 8/8 repayments, down payment 20.0, principal 80.00, interest 15.00 (expected 15.0)
+       was 7 repayments, interest 13.16 | installments 12.00 12.00 12.00 12.00 12.00 12.00 12.00 11.00
+[PASS] 15HW 15% HP 4 Weeks (Weekly): 4/4 repayments, down payment 20.0, principal 80.00, interest 15.00 (expected 15.0)
+       was 4 repayments, interest 15.00 | installments 24.00 24.00 24.00 23.00
+[PASS] 2H4W 20% HP 4 Weeks (Weekly): 4/4 repayments, down payment 20.0, principal 80.0, interest 20.0 (expected 20.0)
+       was 4 repayments, interest 20.0 | installments 25.0 25.0 25.0 25.0
+[PASS] 2H6W 20% HP 6 Weeks (Weekly): 6/6 repayments, down payment 20.0, principal 80.00, interest 20.00 (expected 20.0)
+       was 5 repayments, interest 16.65 | installments 17.00 17.00 17.00 17.00 17.00 15.00
+[PASS] 2H8B 20% HP 8 Weeks (Bi-Weekly): 16/16 repayments, down payment 20.0, principal 80.00, interest 31.56 (per-month rate)
+       was 14 repayments, interest 27.58 | installments 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 7.00 6.56
+[PASS] 2H8W 20% HP 8 Weeks (Weekly): 8/8 repayments, down payment 20.0, principal 80.0, interest 20.0 (expected 20.0)
+       was 6 repayments, interest 15.0 | installments 13.0 13.0 13.0 13.0 13.0 13.0 13.0 9.0
+[PASS] 2HB4 20% HP 4 Weeks (Bi-Weekly): 8/8 repayments, down payment 20.0, principal 80.0, interest 20.0 (expected 20.0)
+       was 6 repayments, interest 15.0 | installments 13.0 13.0 13.0 13.0 13.0 13.0 13.0 9.0
+[PASS] 5H8B 15% HP 8 Weeks (Bi-Weekly): 16/16 repayments, down payment 20.0, principal 80.00, interest 15.00 (expected 15.0)
+       was 14 repayments, interest 13.16 | installments 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 6.00 5.0
+[PASS] H6BW 20 % HP 6 Weeks (Bi Weekly): 12/12 repayments, down payment 20.0, principal 80.00, interest 20.00 (expected 20.0)
+       was 10 repayments, interest 16.70 | installments 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.26
+[PASS] HBW4 20% 4 Weeks (Bi_Weekly) Hilton: 8/8 repayments, down payment 20.0, principal 80.0, interest 20.0 (expected 20.0)
+       was 6 repayments, interest 15.0 | installments 13.0 13.0 13.0 13.0 13.0 13.0 13.0 9.0
+[PASS] HP4B 15% HP 4 Weeks (bi-weekly): 8/8 repayments, down payment 20.0, principal 80.00, interest 15.00 (expected 15.0)
+       was 7 repayments, interest 13.16 | installments 12.00 12.00 12.00 12.00 12.00 12.00 12.00 11.00
+[PASS] The 19 products without down payment are unchanged
+       different: []
+[PASS] H6BW with 55: 12/12 repayments, principal adds up
+       down payment 11.0, installments 4.59 4.59 4.59 4.59 4.59 4.59 4.59 4.59 4.59 4.59 4.59 4.51
+[PASS] H6BW with 250: 12/12 repayments, principal adds up
+       down payment 50.0, installments 20.84 20.84 20.84 20.84 20.84 20.84 20.84 20.84 20.84 20.84 20.84 20.76
+[PASS] H6BW with 1000: 12/12 repayments, principal adds up
+       down payment 200.0, installments 83.34 83.34 83.34 83.34 83.34 83.34 83.34 83.34 83.34 83.34 83.34 83.26
+[PASS] H6BW with 1234: 12/12 repayments, principal adds up
+       down payment 246.8, installments 102.84 102.84 102.84 102.84 102.84 102.84 102.84 102.84 102.84 102.84 102.84 102.76
+[PASS] 2H8B with 55: 16/16 repayments, principal adds up
+       down payment 11.0, installments 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 4.00 1.36
+[PASS] 2H8B with 250: 16/16 repayments, principal adds up
+       down payment 50.0, installments 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 17.00 23.90
+[PASS] 2H8B with 1000: 16/16 repayments, principal adds up
+       down payment 200.0, installments 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 70.00 65.62
+[PASS] 2H8B with 1234: 16/16 repayments, principal adds up
+       down payment 247.0, installments 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.00 86.47
+[PASS] 2H8W with 55: 8/8 repayments, principal adds up
+       down payment 11.0, installments 7.00 7.00 7.00 7.00 7.00 7.00 7.00 6.00
+[PASS] 2H8W with 250: 8/8 repayments, principal adds up
+       down payment 50.0, installments 31.00 31.00 31.00 31.00 31.00 31.00 31.00 33.00
+[PASS] 2H8W with 1000: 8/8 repayments, principal adds up
+       down payment 200.0, installments 125.0 125.0 125.0 125.0 125.0 125.0 125.0 125.0
+[PASS] 2H8W with 1234: 8/8 repayments, principal adds up
+       down payment 247.0, installments 154.00 154.00 154.00 154.00 154.00 154.00 154.00 155.80
+[PASS] 15H8 with 55: 8/8 repayments, principal adds up
+       down payment 11.0, installments 7.00 7.00 7.00 7.00 7.00 7.00 7.00 3.25
+[PASS] 15H8 with 250: 8/8 repayments, principal adds up
+       down payment 50.0, installments 30.00 30.00 30.00 30.00 30.00 30.00 30.00 27.50
+[PASS] 15H8 with 1000: 8/8 repayments, principal adds up
+       down payment 200.0, installments 119.00 119.00 119.00 119.00 119.00 119.00 119.00 117.00
+[PASS] 15H8 with 1234: 8/8 repayments, principal adds up
+       down payment 247.0, installments 147.00 147.00 147.00 147.00 147.00 147.00 147.00 143.10
+[PASS] 2H8W loan 12 disbursed Mon 12 Oct: 8/8 repayments, application = disbursed, down payment 20.0 collected
+       Mon 19/10 Mon 26/10 Mon 02/11 Mon 09/11 Mon 16/11 Mon 23/11 Mon 30/11 Mon 07/12 | 13.0 13.0 13.0 13.0 13.0 13.0 13.0 9.0
+[PASS] 2HB4 loan 13 disbursed Mon 12 Oct: 8/8 repayments, application = disbursed, down payment 20.0 collected
+       Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 | 13.0 13.0 13.0 13.0 13.0 13.0 13.0 9.0
+[PASS] 2HB4 with both Nia settings: regular repayments alternate Thu/Mon
+       Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11
+[PASS] A repayment on the 2HB4 loan leaves the schedule unchanged
+[PASS] HBW4 loan 14 disbursed Mon 12 Oct: 8/8 repayments, application = disbursed, down payment 20.0 collected
+       Mon 26/10 Mon 09/11 Mon 23/11 Mon 07/12 Mon 21/12 Mon 04/01 Mon 18/01 Mon 01/02 | 13.0 13.0 13.0 13.0 13.0 13.0 13.0 9.0
+[PASS] H6BW loan 15 disbursed Mon 12 Oct: 12/12 repayments, application = disbursed, down payment 20.0 collected
+       Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11 Mon 16/11 Thu 19/11 Mon 23/11 | 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.34 8.26
+[PASS] Setting OFF again: new 2H8W schedule back to stock (6 repayments), existing 2HB4 loan keeps 8
+       new 6, existing 8
+
+37/37 checks passed

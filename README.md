@@ -1,3 +1,6 @@
+> **Nia Financial Services fork.** This is Apache Fineract 1.9.0 (the live server's version) with Nia's twice-weekly change, plus a fix so that down-payment loans (HP products, Hilton) get all their repayments.
+> Start with [nia/README.md](nia/README.md). The down-payment fix is on branch `nia/down-payment-full-schedule`.
+
 Apache Fineract: A Platform for Microfinance
 ============
 [![Swagger Validation](https://validator.swagger.io/validator?url=https://sandbox.mifos.community/fineract-provider/swagger-ui/fineract.yaml)](https://validator.swagger.io/validator/debug?url=https://sandbox.mifos.community/fineract-provider/swagger-ui/fineract.yaml) [![build](https://github.com/apache/fineract/actions/workflows/build.yml/badge.svg)](https://github.com/apache/fineract/actions/workflows/build.yml) [![Docker Hub](https://img.shields.io/docker/pulls/apache/fineract.svg?logo=Docker)](https://hub.docker.com/r/apache/fineract)  [![Docker Build](https://img.shields.io/docker/cloud/build/apache/fineract.svg?logo=Docker)](https://hub.docker.com/r/apache/fineract/builds) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=apache_fineract&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=apache_fineract)

@@ -1,0 +1,46 @@
+[PASS] 2W5B disbursed Mon 05 Oct: 10 repayments, application = disbursed, alternating pair
+       Thu 08/10 Mon 12/10 Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11
+[PASS] 2W5B disbursed Tue 06 Oct: 10 repayments, application = disbursed, alternating pair
+       Fri 09/10 Tue 13/10 Fri 16/10 Tue 20/10 Fri 23/10 Tue 27/10 Fri 30/10 Tue 03/11 Fri 06/11 Tue 10/11
+[PASS] 2W5B disbursed Wed 07 Oct: 10 repayments, application = disbursed, alternating pair
+       Sat 10/10 Wed 14/10 Sat 17/10 Wed 21/10 Sat 24/10 Wed 28/10 Sat 31/10 Wed 04/11 Sat 07/11 Wed 11/11
+[PASS] 2W5B disbursed Thu 08 Oct: 10 repayments, application = disbursed, alternating pair
+       Mon 12/10 Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11
+[PASS] 2W5B disbursed Fri 09 Oct: 10 repayments, application = disbursed, alternating pair
+       Tue 13/10 Fri 16/10 Tue 20/10 Fri 23/10 Tue 27/10 Fri 30/10 Tue 03/11 Fri 06/11 Tue 10/11 Fri 13/11
+[PASS] 2W5B disbursed Sat 10 Oct: 10 repayments, application = disbursed, alternating pair
+       Wed 14/10 Sat 17/10 Wed 21/10 Sat 24/10 Wed 28/10 Sat 31/10 Wed 04/11 Sat 07/11 Wed 11/11 Sat 14/11
+[PASS] 2HB4 (down payment) disbursed Thu 08 Oct: regular repayments Mon/Thu
+       Mon 12/10 Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10
+[PASS] G4WB (7-day minimum) disbursed Wed 07 Oct: first repayment Wed 14 Oct, then Sat/Wed
+       Wed 14/10 Sat 17/10 Wed 21/10 Sat 24/10 Wed 28/10 Sat 31/10 Wed 04/11 Sat 07/11
+[PASS] 2W5B expected Thu 08 Oct, disbursed Fri 09 Oct: regenerated as Tue/Fri
+       Tue 13/10 Fri 16/10 Tue 20/10 Fri 23/10 Tue 27/10 Fri 30/10 Tue 03/11 Fri 06/11 Tue 10/11 Fri 13/11
+[PASS] Repayment on Thu 08 Oct leaves every due date unchanged
+       Thu 08/10 Mon 12/10 Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11
+[PASS] Setting OFF: stock behaviour, dates cycle through the week
+       Thu 15/10 Mon 19/10 Wed 21/10 Sat 24/10 Tue 27/10 Fri 30/10 Mon 02/11 Thu 05/11 Mon 09/11 Wed 11/11
+[PASS] Setting ON: Mon/Thu pairs
+       Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11 Mon 16/11
+[PASS] Preview Mon 12 Oct with holiday Thu 22 Oct: Thu 22 -> Mon 26, pair kept
+       Thu 15/10 Mon 19/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11 Mon 16/11 Thu 19/11
+       before job: twice-weekly Mon 12 Oct loan Thu 15/10 Mon 19/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11 Mon 16/11 Thu 19/11
+       before job: weekly WC4W Thu 08 Oct loan  Thu 15/10 Thu 29/10 Thu 05/11 Thu 12/11
+[PASS] Holiday job (success) on existing Mon 05 Oct loan: Thu 22 -> Mon 26, pair kept, nothing doubled
+       Thu 08/10 Mon 12/10 Thu 15/10 Mon 19/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11
+[PASS] After job: Mon-disbursed loan has no payment on 22 Oct, no duplicates, no Sunday
+       Thu 08/10 Mon 12/10 Thu 15/10 Mon 19/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11
+[PASS] After job: Tue-disbursed loan has no payment on 22 Oct, no duplicates, no Sunday
+       Fri 09/10 Tue 13/10 Fri 16/10 Tue 20/10 Fri 23/10 Tue 27/10 Fri 30/10 Tue 03/11 Fri 06/11 Tue 10/11
+[PASS] After job: Wed-disbursed loan has no payment on 22 Oct, no duplicates, no Sunday
+       Sat 10/10 Wed 14/10 Sat 17/10 Wed 21/10 Sat 24/10 Wed 28/10 Sat 31/10 Wed 04/11 Sat 07/11 Wed 11/11
+[PASS] After job: Thu-disbursed loan has no payment on 22 Oct, no duplicates, no Sunday
+       Mon 12/10 Thu 15/10 Mon 19/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11 Mon 16/11
+[PASS] After job: Fri-disbursed loan has no payment on 22 Oct, no duplicates, no Sunday
+       Tue 13/10 Fri 16/10 Tue 20/10 Fri 23/10 Tue 27/10 Fri 30/10 Tue 03/11 Fri 06/11 Tue 10/11 Fri 13/11
+[PASS] After job: Sat-disbursed loan has no payment on 22 Oct, no duplicates, no Sunday
+       Wed 14/10 Sat 17/10 Wed 21/10 Sat 24/10 Wed 28/10 Sat 31/10 Wed 04/11 Sat 07/11 Wed 11/11 Sat 14/11
+[INFO] Loan created after holiday, before job - twice-weekly: Thu 15/10 Mon 19/10 Thu 22/10 Mon 26/10 Thu 29/10 Mon 02/11 Thu 05/11 Mon 09/11 Thu 12/11 Mon 16/11  on holiday: True
+[INFO] Loan created after holiday, before job - weekly WC4W: Thu 15/10 Thu 22/10 Thu 29/10 Thu 05/11  on holiday: True
+
+20/20 checks passed
