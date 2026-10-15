@@ -33,6 +33,8 @@ public interface ConfigurationDomainService {
 
     boolean isRepaymentStepsInWorkingDaysEnabled();
 
+    boolean isDownPaymentSpreadRemainingPrincipalEnabled();
+
     boolean allowTransactionsOnHolidayEnabled();
 
     boolean allowTransactionsOnNonWorkingDayEnabled();

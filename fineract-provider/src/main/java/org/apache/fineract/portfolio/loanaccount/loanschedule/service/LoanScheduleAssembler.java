@@ -462,7 +462,8 @@ public class LoanScheduleAssembler {
                 HolidayStatusType.ACTIVE.getValue());
         final WorkingDays workingDays = this.workingDaysRepository.findOne();
         HolidayDetailDTO detailDTO = new HolidayDetailDTO(isHolidayEnabled, holidays, workingDays, false, false,
-                this.configurationDomainService.isRepaymentStepsInWorkingDaysEnabled());
+                this.configurationDomainService.isRepaymentStepsInWorkingDaysEnabled(),
+                this.configurationDomainService.isDownPaymentSpreadRemainingPrincipalEnabled());
         final boolean isInterestToBeRecoveredFirstWhenGreaterThanEMI = this.configurationDomainService
                 .isInterestToBeRecoveredFirstWhenGreaterThanEMI();
         final boolean isPrincipalCompoundingDisabledForOverdueLoans = this.configurationDomainService
